@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body{
+            background-color: pink;
+        }
+        #comments{
+            width: 500px;
+            height: auto;
+            padding: 10px;
+            color: white;
+            background-color: red;
+        }
+        button{
+            margin: 10px;
+            padding: 5px;
+            border: 1px solid white;
+            border-radius: 5px;
+            font-weight: 300;
+            background-color: black;
+            color: white;
+        }
+    </style>
+    <title>Comments</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        // Jquery code here..
+        $(document).ready(function() {
+            var commentCount = 2;
+            $("button").click(function(){
+                commentCount = commentCount + 2;
+                let commentURL = "fetch_comments_data.php?data_type=more_comments&commentCount=" + commentCount;
+                $("#comments").load(commentURL);
+            });
+        });
+    </script>
+</head>
+<body onload="setInitialComments()">
+    <div id="comments"></div>
+    <button>Show more Comments</button>
+
+    <script>
+        // sending the urgent request to api to fetch the 1st few comments
+        var commentsDiv = document.getElementById('comments');
+        function setInitialComments(){
+            fetch("fetch_comments_data.php?data_type=initial", {method: 'GET', redirect: 'follow'})
+                .then(response => response.text())
+                .then(result => {
+                    json_result = JSON.parse(result);
+                    
+                    for(let i=0; i < json_result.length; i++){
+                        let authorPara = document.createElement("p");
+                        authorPara.appendChild(document.createTextNode(json_result[i][0]));
+                        authorPara.appendChild(document.createElement("br"));
+                        authorPara.appendChild(document.createTextNode(json_result[i][1]));
+                        commentsDiv.appendChild(authorPara);
+                    }
+
+                })
+                .catch(error => console.log(error));
+        }
+    </script>
+</body>
+</html>

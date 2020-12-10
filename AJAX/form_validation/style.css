@@ -1,0 +1,36 @@
+body, html{
+    background-color: silver;
+}
+
+form{
+    width: 30%;
+    margin: auto;
+    margin-top: 15%;
+    padding: 20px;
+    overflow: hidden;
+}
+
+input, select, textarea, button{
+    width: 100%;
+    font-size: 15px;
+    margin: 5px auto 5px auto;
+    border: 3px solid white;
+}
+
+button{
+    padding: 5px;
+    background-color: black;
+    color: white;
+}
+
+.form-error{
+    color: red;
+}
+
+.input-error{
+    box-shadow: 0 0 5px red;
+}
+
+.form-success{
+    color: lightgreen;
+}

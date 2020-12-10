@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Validation</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        // when the document is ready or loaded
+        $(document).ready(() => {
+            $("input").keyup(function(){
+                var name = $("input").val();
+                $.post("suggestions.php", {
+                    suggestion: name
+                }, (data, status) => {
+                    // check if the status is success
+                    if (status === 'success'){
+                        $("#test").html(data);
+                    }else{
+                        $("#test").html("Suggestion Could not be fetched from Server");
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+<body>
+    <input type="text" name="name">
+    <p id="test"></p>
+</body>
+</html>
