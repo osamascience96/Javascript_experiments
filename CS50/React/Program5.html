@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Question Application</title>
+
+    <style>
+        #app{
+            text-align: center;
+            font-family: sans-serif;
+        }
+
+        #problem{
+            font-size: 72px;
+        }
+
+        .incorrect{
+            color: red;
+        }
+
+        .winner{
+            font-size: 72px;
+            color: green;
+        }
+    </style>
+</head>
+<body>
+    
+    <div id="app"></div>
+
+    <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script type="text/babel">
+        function App(){
+            // set the state of the application
+            const [state, setState] = React.useState({
+                num1: 1,
+                num2: 2,
+                response:"",
+                score: 0,
+                incorrect: false,
+            });
+
+            function updateResponse(event){
+                setState({
+                    ...state,
+                    response: event.target.value
+                });
+            }
+
+            function inputkeypress(event){
+                if(event.key === "Enter"){
+                    // check if the state response is not empty,
+                    if(state.response !== ""){
+                        // convert the answer to the string
+                        const answer = parseInt(state.response);
+                        // check if the answer is right,
+                        if(state.num1 + state.num2 === answer){
+                            // on right
+                            // update the state
+                            setState({
+                                ...state,
+                                // get the num1 and num2 from 0 to 10 in random
+                                num1: Math.ceil(Math.random() * 10),
+                                num2: Math.ceil(Math.random() * 10),
+                                score: state.score + 1,
+                                response: "",
+                                incorrect: false,
+                            });
+                        }else{
+                            // or if wrong
+                            // update the state
+                            setState({
+                                ...state,
+                                score: state.score - 1,
+                                response: "",
+                                incorrect: true,
+                            });
+                        }
+                    }
+                }
+            }
+
+            // check if the user is the winner
+            if(state.score === 10){
+                return(
+                    <div className="winner">
+                        You Won!
+                    </div>
+                );
+            }
+            
+            return(
+                <div>
+                    <div className={state.incorrect ? "incorrect" : ""} id="problem">{state.num1} + {state.num2}</div>
+                    <input autoFocus={true} onKeyPress={inputkeypress} onChange={updateResponse} value={state.response}/>
+                    <div>Score: {state.score}</div>
+                </div>
+            );
+        }
+
+        ReactDOM.render(<App/>, document.querySelector("#app"));
+    </script>
+</body>
+</html>
